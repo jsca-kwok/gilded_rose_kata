@@ -1,3 +1,36 @@
+class NonLegendaryProduct
+  def initialize(item)
+    @item = item
+  end
+
+  def update_sell_in
+    @item.sell_in -= 1
+  end
+end
+
+class LegendaryProduct
+  def initialize(item)
+    @item = item
+  end
+
+  def update_sell_in
+  end
+end
+
+class ProductFactory
+  def initialize(item)
+    @item = item
+  end
+
+  def build
+    if @item.name != 'Sulfuras, Hand of Ragnaros'
+      NonLegendaryProduct.new(@item).update_sell_in
+    else
+      LegendaryProduct.new(@item).update_sell_in
+    end
+  end
+end
+
 class Product
   def initialize(item)
     @item = item
@@ -47,11 +80,7 @@ class Product
   end
 
   def update_sell_in
-    # if @item is NOT "Sulfuras"
-    if @item.name != 'Sulfuras, Hand of Ragnaros'
-      # decrease sell in date
-      @item.sell_in -= 1
-    end
+    ProductFactory.new(@item).build
   end
 
   def update_quality_again 
