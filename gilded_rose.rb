@@ -8,7 +8,6 @@ class NonLegendaryProduct
   end
 
   def update_quality
-    # then decrease @item quality by 1
     @item.quality -= 1
   end
 end
@@ -96,11 +95,7 @@ class Product
         if @item.name != 'Backstage passes to a TAFKAL80ETC concert'
           # and @item quality is positive
           if @item.quality > 0
-            # and the @item is NOT "Sulfuras"
-            if @item.name != 'Sulfuras, Hand of Ragnaros'
-              # decrease quality by 1
-              @item.quality -= 1
-            end
+            ProductFactory.new(@item).build.update_quality
           end
         # if the @item is "Backstage pass"
         else
