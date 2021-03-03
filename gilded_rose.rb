@@ -30,10 +30,12 @@ class NonLegendaryProductFactory
   end
 
   def build
-    if @item.name != 'Aged Brie'
+    if @item.name == 'Aged Brie'
+      AgedBrie.new(@item)
+    elsif @item.name == 'Backstage passes to a TAFKAL80ETC concert'
       BackstagePass.new(@item)
     else
-      AgedBrie.new(@item)
+      NonLegendaryProduct.new(@item)
     end
   end
 end
