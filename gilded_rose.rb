@@ -6,6 +6,11 @@ class NonLegendaryProduct
   def update_sell_in
     @item.sell_in -= 1
   end
+
+  def update_quality
+    # then decrease @item quality by 1
+    @item.quality -= 1
+  end
 end
 
 class LegendaryProduct
@@ -14,6 +19,9 @@ class LegendaryProduct
   end
 
   def update_sell_in
+  end
+
+  def update_quality
   end
 end
 
@@ -24,9 +32,9 @@ class ProductFactory
 
   def build
     if @item.name != 'Sulfuras, Hand of Ragnaros'
-      NonLegendaryProduct.new(@item).update_sell_in
+      NonLegendaryProduct.new(@item)
     else
-      LegendaryProduct.new(@item).update_sell_in
+      LegendaryProduct.new(@item)
     end
   end
 end
@@ -41,11 +49,7 @@ class Product
     if @item.name != 'Aged Brie' && @item.name != 'Backstage passes to a TAFKAL80ETC concert'
       # and @item quality is positive
       if @item.quality > 0
-        # and @item is not "Sulfuras"
-        if @item.name != 'Sulfuras, Hand of Ragnaros'
-          # then decrease @item quality by 1
-          @item.quality -= 1
-        end
+        ProductFactory.new(@item).build.update_quality
       end
     else
       # if @item is "Aged Brie" or "Backstage pass" 
@@ -80,7 +84,7 @@ class Product
   end
 
   def update_sell_in
-    ProductFactory.new(@item).build
+    ProductFactory.new(@item).build.update_sell_in
   end
 
   def update_quality_again 
