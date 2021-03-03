@@ -24,6 +24,20 @@ class LegendaryProduct
   end
 end
 
+class NonLegendaryProductFactory
+  def initialize(item)
+    @item = item
+  end
+
+  def build
+    if @item.name != 'Aged Brie'
+      BackstagePass.new(@item)
+    else
+      AgedBrie.new(@item)
+    end
+  end
+end
+
 class ProductFactory
   def initialize(item)
     @item = item
