@@ -3,7 +3,7 @@ class Product
     @item = item
   end
 
-  def age 
+  def update_quality
     # if @item is NOT "Aged Brie" or "Backstage pass"
     if @item.name != 'Aged Brie' && @item.name != 'Backstage passes to a TAFKAL80ETC concert'
       # and @item quality is positive
@@ -44,13 +44,17 @@ class Product
         end
       end
     end
+  end
 
+  def update_sell_in
     # if @item is NOT "Sulfuras"
     if @item.name != 'Sulfuras, Hand of Ragnaros'
       # decrease sell in date
       @item.sell_in -= 1
     end
+  end
 
+  def update_quality_again 
     # if @item sell in date is negative
     if @item.sell_in < 0
       # and the @item is NOT "Aged Brie"
@@ -79,6 +83,12 @@ class Product
         end
       end
     end
+  end
+
+  def age 
+    update_quality
+    update_sell_in
+    update_quality_again
   end
 end
 
