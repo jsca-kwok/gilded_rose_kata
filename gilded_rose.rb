@@ -16,11 +16,25 @@ class LegendaryProduct
   def initialize(item)
     @item = item
   end
-
+  
   def update_sell_in
   end
-
+  
   def update_quality
+  end
+end
+
+class ProductFactory
+  def initialize(item)
+    @item = item
+  end
+
+  def build
+    if @item.name != 'Sulfuras, Hand of Ragnaros'
+      NonLegendaryProductFactory.new(@item).build
+    else
+      LegendaryProduct.new(@item)
+    end
   end
 end
 
@@ -40,7 +54,7 @@ class NonLegendaryProductFactory
   end
 end
 
-class BackstagePass
+class BackstagePass < NonLegendaryProduct
   def initialize(item)
     @item = item
   end
@@ -67,26 +81,12 @@ class BackstagePass
   end
 end
 
-class AgedBrie
+class AgedBrie < NonLegendaryProduct
   def initialize(item)
     @item = item
   end
 
   def update_quality
-  end
-end
-
-class ProductFactory
-  def initialize(item)
-    @item = item
-  end
-
-  def build
-    if @item.name != 'Sulfuras, Hand of Ragnaros'
-      NonLegendaryProduct.new(@item)
-    else
-      LegendaryProduct.new(@item)
-    end
   end
 end
 
