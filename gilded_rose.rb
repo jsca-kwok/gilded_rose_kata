@@ -1,48 +1,89 @@
-def update_quality(items)
-  items.each do |item|
-    if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
-      if item.quality > 0
-        if item.name != 'Sulfuras, Hand of Ragnaros'
-          item.quality -= 1
-        end
-      end
-    else
-      if item.quality < 50
-        item.quality += 1
-        if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-          if item.sell_in < 11
-            if item.quality < 50
-              item.quality += 1
-            end
+class Product
+  def initialize(item)
+    @item = item
+  end
+
+      # if item is NOT "Aged Brie" or "Backstage pass"
+      if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
+        # and item quality is positive
+        if item.quality > 0
+          # and item is not "Sulfuras"
+          if item.name != 'Sulfuras, Hand of Ragnaros'
+            # then decrease item quality by 1
+            item.quality -= 1
           end
-          if item.sell_in < 6
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
-        end
-      end
-    end
-    if item.name != 'Sulfuras, Hand of Ragnaros'
-      item.sell_in -= 1
-    end
-    if item.sell_in < 0
-      if item.name != "Aged Brie"
-        if item.name != 'Backstage passes to a TAFKAL80ETC concert'
-          if item.quality > 0
-            if item.name != 'Sulfuras, Hand of Ragnaros'
-              item.quality -= 1
-            end
-          end
-        else
-          item.quality = item.quality - item.quality
         end
       else
+        # if item is "Aged Brie" or "Backstage pass" 
+        # and quality is less than 50
         if item.quality < 50
+          # then increase quality by 1
           item.quality += 1
+          # if item is "Backstage pass" 
+          # and quality is less than 50
+          if item.name == 'Backstage passes to a TAFKAL80ETC concert'
+            # and item has sell in by 11 days
+            if item.sell_in < 11
+              # and quality is less than 50
+              if item.quality < 50
+                # then increase quality by 1
+                item.quality += 1
+              end
+            end
+            # if item is "Backstage pass"
+            # and quality is less than 50
+            # and item has sell in by 6 days
+            if item.sell_in < 6
+              # and quality is less than 50
+              if item.quality < 50
+                # then increase quality by 1
+                item.quality += 1
+              end
+            end
+          end
+        end
+      end
+  
+      # if item is NOT "Sulfuras"
+      if item.name != 'Sulfuras, Hand of Ragnaros'
+        # decrease sell in date
+        item.sell_in -= 1
+      end
+  
+      # if item sell in date is negative
+      if item.sell_in < 0
+        # and the item is NOT "Aged Brie"
+        if item.name != "Aged Brie"
+          # and then item is NOT "Backstage pass"
+          if item.name != 'Backstage passes to a TAFKAL80ETC concert'
+            # and item quality is positive
+            if item.quality > 0
+              # and the item is NOT "Sulfuras"
+              if item.name != 'Sulfuras, Hand of Ragnaros'
+                # decrease quality by 1
+                item.quality -= 1
+              end
+            end
+          # if the item is "Backstage pass"
+          else
+            # item quality is 0
+            item.quality = item.quality - item.quality
+          end
+        # if the item is "Aged Brie"
+        else
+          # and quality is less than 50
+          if item.quality < 50
+            # increase quality by 1
+            item.quality += 1
+          end
         end
       end
     end
+end
+
+def update_quality(items)
+  items.each do |item|
+    Product.new(item)
   end
 end
 
