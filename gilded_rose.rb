@@ -38,6 +38,42 @@ class NonLegendaryProductFactory
   end
 end
 
+class BackstagePass
+  def initialize(item)
+    @item = item
+  end
+
+  def update_quality 
+    # and @item has sell in by 11 days
+    if @item.sell_in < 11
+      # and quality is less than 50
+      if @item.quality < 50
+        # then increase quality by 1
+        @item.quality += 1
+      end
+    end
+    # if @item is "Backstage pass"
+    # and quality is less than 50
+    # and @item has sell in by 6 days
+    if @item.sell_in < 6
+      # and quality is less than 50
+      if @item.quality < 50
+        # then increase quality by 1
+        @item.quality += 1
+      end
+    end
+  end
+end
+
+class AgedBrie
+  def initialize(item)
+    @item = item
+  end
+
+  def update_quality
+  end
+end
+
 class ProductFactory
   def initialize(item)
     @item = item
@@ -70,28 +106,7 @@ class Product
       if @item.quality < 50
         # then increase quality by 1
         @item.quality += 1
-        # if @item is "Backstage pass" 
-        # and quality is less than 50
-        if @item.name == 'Backstage passes to a TAFKAL80ETC concert'
-          # and @item has sell in by 11 days
-          if @item.sell_in < 11
-            # and quality is less than 50
-            if @item.quality < 50
-              # then increase quality by 1
-              @item.quality += 1
-            end
-          end
-          # if @item is "Backstage pass"
-          # and quality is less than 50
-          # and @item has sell in by 6 days
-          if @item.sell_in < 6
-            # and quality is less than 50
-            if @item.quality < 50
-              # then increase quality by 1
-              @item.quality += 1
-            end
-          end
-        end
+        NonLegendaryProductFactory.new(@item).build.update_quality
       end
     end
   end
