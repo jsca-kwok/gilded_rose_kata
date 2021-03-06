@@ -92,7 +92,7 @@ class NonLegendaryProduct < Product
   end
 end
 
-class LegendaryProduct
+class LegendaryProduct < Product
   def initialize(item)
     @item = item
   end
