@@ -11,7 +11,7 @@ class NonLegendaryProduct
     @item.quality -= 1
   end
 
-  def check_maxed_quality(quality)
+  def maxed_quality?(quality)
     if quality < 50
       false
     end
@@ -69,7 +69,7 @@ class BackstagePass < NonLegendaryProduct
     # and @item has sell in by 11 days
     if @item.sell_in < 11
       # and quality is less than 50
-      if !check_maxed_quality(@item.quality)
+      if !maxed_quality?(@item.quality)
         # then increase quality by 1
         @item.quality += 1
       end
@@ -79,7 +79,7 @@ class BackstagePass < NonLegendaryProduct
     # and @item has sell in by 6 days
     if @item.sell_in < 6
       # and quality is less than 50
-      if !check_maxed_quality(@item.quality)
+      if !maxed_quality?(@item.quality)
         # then increase quality by 1
         @item.quality += 1
       end
@@ -99,6 +99,12 @@ end
 class Product
   def initialize(item)
     @item = item
+  end
+
+  def expired?(sell_in)
+    if sell_in < 0
+      true
+    end
   end
 
   def update_quality
@@ -125,7 +131,7 @@ class Product
 
   def update_quality_again 
     # if @item sell in date is negative
-    if @item.sell_in < 0
+    if expired?(@item.sell_in)
       # and the @item is NOT "Aged Brie"
       if @item.name != "Aged Brie"
         # and then @item is NOT "Backstage pass"
