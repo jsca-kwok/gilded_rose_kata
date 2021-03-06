@@ -46,8 +46,7 @@ class Product
           end
         # if the @item is "Backstage pass"
         else
-          # @item quality is 0
-          @item.quality = 0
+          NonLegendaryProductFactory.new(@item).build.update_quality
         end
       # if the @item is "Aged Brie"
       else
@@ -67,22 +66,15 @@ class Product
   end
 end
 
-
-def update_quality(items)
-  items.each do |item|
-    Product.new(item).age
-  end
-end
-
 class NonLegendaryProduct < Product
   def initialize(item)
     @item = item
   end
-
+  
   def update_sell_in
     @item.sell_in -= 1
   end
-
+  
   def update_quality
     @item.quality -= 1
   end
@@ -104,7 +96,7 @@ class ProductFactory
   def initialize(item)
     @item = item
   end
-
+  
   def build
     if @item.name != 'Sulfuras, Hand of Ragnaros'
       NonLegendaryProductFactory.new(@item).build
@@ -118,7 +110,7 @@ class NonLegendaryProductFactory
   def initialize(item)
     @item = item
   end
-
+  
   def build
     if @item.name == 'Aged Brie'
       AgedBrie.new(@item)
@@ -134,7 +126,7 @@ class BackstagePass < NonLegendaryProduct
   def initialize(item)
     @item = item
   end
-
+  
   def update_quality 
     # and @item has sell in by 11 days
     if @item.sell_in < 11
@@ -154,7 +146,7 @@ class BackstagePass < NonLegendaryProduct
         @item.quality += 1
       end
     end
-
+    
     if expired?(@item.sell_in)
       @item.quality = 0
     end
@@ -165,11 +157,16 @@ class AgedBrie < NonLegendaryProduct
   def initialize(item)
     @item = item
   end
-
+  
   def update_quality
   end
 end
 
+def update_quality(items)
+  items.each do |item|
+    Product.new(item).age
+  end
+end
 
 # DO NOT CHANGE THINGS BELOW -----------------------------------------
 
