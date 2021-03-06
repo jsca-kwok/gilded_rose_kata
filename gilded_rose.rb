@@ -4,15 +4,11 @@ class Product
   end
 
   def expired?(sell_in)
-    if sell_in < 0
-      true
-    end
+    true if sell_in < 0
   end
 
   def maxed_quality?(quality)
-    if quality < 50
-      false
-    end
+    false if quality < 50
   end
 
   def update_quality
