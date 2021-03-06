@@ -9,6 +9,12 @@ class Product
     end
   end
 
+  def maxed_quality?(quality)
+    if quality < 50
+      false
+    end
+  end
+
   def update_quality
     # if @item is NOT "Aged Brie" or "Backstage pass"
     if @item.name != 'Aged Brie' && @item.name != 'Backstage passes to a TAFKAL80ETC concert'
@@ -83,12 +89,6 @@ class NonLegendaryProduct < Product
 
   def update_quality
     @item.quality -= 1
-  end
-
-  def maxed_quality?(quality)
-    if quality < 50
-      false
-    end
   end
 end
 
