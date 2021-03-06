@@ -1,4 +1,78 @@
-class NonLegendaryProduct
+class Product
+  def initialize(item)
+    @item = item
+  end
+
+  def expired?(sell_in)
+    if sell_in < 0
+      true
+    end
+  end
+
+  def update_quality
+    # if @item is NOT "Aged Brie" or "Backstage pass"
+    if @item.name != 'Aged Brie' && @item.name != 'Backstage passes to a TAFKAL80ETC concert'
+      # and @item quality is positive
+      if @item.quality > 0
+        ProductFactory.new(@item).build.update_quality
+      end
+    else
+      # if @item is "Aged Brie" or "Backstage pass" 
+      # and quality is less than 50
+      if @item.quality < 50
+        # then increase quality by 1
+        @item.quality += 1
+        NonLegendaryProductFactory.new(@item).build.update_quality
+      end
+    end
+  end
+
+  def update_sell_in
+    ProductFactory.new(@item).build.update_sell_in
+  end
+
+  def update_quality_again 
+    # if @item sell in date is negative
+    if expired?(@item.sell_in)
+      # and the @item is NOT "Aged Brie"
+      if @item.name != "Aged Brie"
+        # and then @item is NOT "Backstage pass"
+        if @item.name != 'Backstage passes to a TAFKAL80ETC concert'
+          # and @item quality is positive
+          if @item.quality > 0
+            ProductFactory.new(@item).build.update_quality
+          end
+        # if the @item is "Backstage pass"
+        else
+          # @item quality is 0
+          @item.quality = 0
+        end
+      # if the @item is "Aged Brie"
+      else
+        # and quality is less than 50
+        if @item.quality < 50
+          # increase quality by 1
+          @item.quality += 1
+        end
+      end
+    end
+  end
+
+  def age 
+    update_quality
+    update_sell_in
+    update_quality_again
+  end
+end
+
+
+def update_quality(items)
+  items.each do |item|
+    Product.new(item).age
+  end
+end
+
+class NonLegendaryProduct < Product
   def initialize(item)
     @item = item
   end
@@ -84,6 +158,10 @@ class BackstagePass < NonLegendaryProduct
         @item.quality += 1
       end
     end
+
+    if expired?(@item.sell_in)
+      @item.quality = 0
+    end
   end
 end
 
@@ -96,79 +174,6 @@ class AgedBrie < NonLegendaryProduct
   end
 end
 
-class Product
-  def initialize(item)
-    @item = item
-  end
-
-  def expired?(sell_in)
-    if sell_in < 0
-      true
-    end
-  end
-
-  def update_quality
-    # if @item is NOT "Aged Brie" or "Backstage pass"
-    if @item.name != 'Aged Brie' && @item.name != 'Backstage passes to a TAFKAL80ETC concert'
-      # and @item quality is positive
-      if @item.quality > 0
-        ProductFactory.new(@item).build.update_quality
-      end
-    else
-      # if @item is "Aged Brie" or "Backstage pass" 
-      # and quality is less than 50
-      if @item.quality < 50
-        # then increase quality by 1
-        @item.quality += 1
-        NonLegendaryProductFactory.new(@item).build.update_quality
-      end
-    end
-  end
-
-  def update_sell_in
-    ProductFactory.new(@item).build.update_sell_in
-  end
-
-  def update_quality_again 
-    # if @item sell in date is negative
-    if expired?(@item.sell_in)
-      # and the @item is NOT "Aged Brie"
-      if @item.name != "Aged Brie"
-        # and then @item is NOT "Backstage pass"
-        if @item.name != 'Backstage passes to a TAFKAL80ETC concert'
-          # and @item quality is positive
-          if @item.quality > 0
-            ProductFactory.new(@item).build.update_quality
-          end
-        # if the @item is "Backstage pass"
-        else
-          # @item quality is 0
-          @item.quality = 0
-        end
-      # if the @item is "Aged Brie"
-      else
-        # and quality is less than 50
-        if @item.quality < 50
-          # increase quality by 1
-          @item.quality += 1
-        end
-      end
-    end
-  end
-
-  def age 
-    update_quality
-    update_sell_in
-    update_quality_again
-  end
-end
-
-
-def update_quality(items)
-  items.each do |item|
-    Product.new(item).age
-  end
-end
 
 # DO NOT CHANGE THINGS BELOW -----------------------------------------
 
