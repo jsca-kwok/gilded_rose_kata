@@ -10,6 +10,12 @@ class NonLegendaryProduct
   def update_quality
     @item.quality -= 1
   end
+
+  def check_maxed_quality(quality)
+    if quality < 50
+      false
+    end
+  end
 end
 
 class LegendaryProduct
@@ -63,7 +69,7 @@ class BackstagePass < NonLegendaryProduct
     # and @item has sell in by 11 days
     if @item.sell_in < 11
       # and quality is less than 50
-      if @item.quality < 50
+      if !check_maxed_quality(@item.quality)
         # then increase quality by 1
         @item.quality += 1
       end
@@ -73,7 +79,7 @@ class BackstagePass < NonLegendaryProduct
     # and @item has sell in by 6 days
     if @item.sell_in < 6
       # and quality is less than 50
-      if @item.quality < 50
+      if !check_maxed_quality(@item.quality)
         # then increase quality by 1
         @item.quality += 1
       end
