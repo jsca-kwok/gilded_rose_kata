@@ -137,7 +137,7 @@ class Product
         # if the @item is "Backstage pass"
         else
           # @item quality is 0
-          @item.quality = @item.quality - @item.quality
+          @item.quality = 0
         end
       # if the @item is "Aged Brie"
       else
