@@ -46,15 +46,16 @@ class Product
           end
         # if the @item is "Backstage pass"
         else
-          NonLegendaryProductFactory.new(@item).build.update_quality
+          ProductFactory.new(@item).build.update_quality
         end
       # if the @item is "Aged Brie"
       else
-        # and quality is less than 50
-        if @item.quality < 50
-          # increase quality by 1
-          @item.quality += 1
-        end
+        ProductFactory.new(@item).build.update_quality_again
+        # # and quality is less than 50
+        # if maxed_quality?
+        #   # increase quality by 1
+        #   @item.quality += 1
+        # end
       end
     end
   end
@@ -159,6 +160,13 @@ class AgedBrie < NonLegendaryProduct
   end
   
   def update_quality
+    
+  end
+
+  def update_quality_again
+    if maxed_quality? && expired?
+      @item.quality +=1
+    end
   end
 end
 
