@@ -46,7 +46,7 @@ class Product
           end
         # if the @item is "Backstage pass"
         else
-          ProductFactory.new(@item).build.update_quality
+          ProductFactory.new(@item).build.update_quality_again
         end
       # if the @item is "Aged Brie"
       else
@@ -147,7 +147,9 @@ class BackstagePass < NonLegendaryProduct
         @item.quality += 1
       end
     end
-    
+  end
+
+  def update_quality_again
     if expired?
       @item.quality = 0
     end
