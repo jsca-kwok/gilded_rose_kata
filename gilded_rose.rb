@@ -3,12 +3,12 @@ class Product
     @item = item
   end
 
-  def expired?(sell_in)
-    true if sell_in < 0
+  def expired?
+    @item.sell_in < 0
   end
 
-  def maxed_quality?(quality)
-    false if quality < 50
+  def maxed_quality?
+    @item.quality < 50
   end
 
   def update_quality
@@ -21,7 +21,7 @@ class Product
     else
       # if @item is "Aged Brie" or "Backstage pass" 
       # and quality is less than 50
-      if @item.quality < 50
+      if maxed_quality?
         # then increase quality by 1
         @item.quality += 1
         NonLegendaryProductFactory.new(@item).build.update_quality
@@ -35,7 +35,7 @@ class Product
 
   def update_quality_again 
     # if @item sell in date is negative
-    if expired?(@item.sell_in)
+    if expired?
       # and the @item is NOT "Aged Brie"
       if @item.name != "Aged Brie"
         # and then @item is NOT "Backstage pass"
@@ -131,7 +131,7 @@ class BackstagePass < NonLegendaryProduct
     # and @item has sell in by 11 days
     if @item.sell_in < 11
       # and quality is less than 50
-      if !maxed_quality?(@item.quality)
+      if maxed_quality?
         # then increase quality by 1
         @item.quality += 1
       end
@@ -141,13 +141,13 @@ class BackstagePass < NonLegendaryProduct
     # and @item has sell in by 6 days
     if @item.sell_in < 6
       # and quality is less than 50
-      if !maxed_quality?(@item.quality)
+      if maxed_quality?
         # then increase quality by 1
         @item.quality += 1
       end
     end
     
-    if expired?(@item.sell_in)
+    if expired?
       @item.quality = 0
     end
   end
