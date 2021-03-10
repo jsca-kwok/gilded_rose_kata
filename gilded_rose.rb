@@ -29,31 +29,20 @@ class Product
     end
   end
 
-
-
   def update_sell_in
     ProductFactory.new(@item).build.update_sell_in
   end
 
   def update_quality_again 
-    # if @item sell in date is negative
     if expired?
-      # and the @item is NOT "Aged Brie"
       if @item.name == "Aged Brie"
         ProductFactory.new(@item).build.update_quality_again
       else
-        # and then @item is NOT "Backstage pass"
-        if @item.name == 'Backstage passes to a TAFKAL80ETC concert'
-         
+        if @item.name == 'Backstage passes to a TAFKAL80ETC concert' 
           ProductFactory.new(@item).build.update_quality_again
         else
-           # and @item quality is positive
-           if @item.quality > 0
-            ProductFactory.new(@item).build.update_quality
-          end
-        # if the @item is "Backstage pass"
+          ProductFactory.new(@item).build.update_quality
         end
-      # if the @item is "Aged Brie"
       end
     end
   end
