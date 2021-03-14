@@ -1,52 +1,3 @@
-class Product
-  def initialize(item)
-    @item = item
-  end
-
-  def expired?
-    @item.sell_in < 0
-  end
-
-  def maxed_quality?
-    @item.quality < 50
-  end
-
-  def age 
-    update_quality
-    update_sell_in
-    update_quality_again
-  end
-end
-
-class NonLegendaryProduct < Product
-  def update_sell_in
-    @item.sell_in -= 1
-  end
-  
-  def update_quality
-    if @item.quality > 0
-      @item.quality -= 1
-    end
-  end
-
-  def update_quality_again
-    if expired?
-      update_quality
-    end
-  end
-end
-
-class LegendaryProduct < Product
-  def update_sell_in
-  end
-  
-  def update_quality
-  end
-
-  def update_quality_again
-  end
-end
-
 class ProductFactory
   def initialize(item)
     @item = item
@@ -78,6 +29,82 @@ class NonLegendaryProductFactory
     end
   end
 end
+
+class QualityFactory
+  def initialize(item)
+    @item = item
+  end
+
+  def build
+    if @item.quality < 0
+      NoQuality.new(@item)
+    else
+      HasQuality.new(@item)
+    end
+  end
+end
+
+class NoQuality
+  def initialize(item)
+    @item = item
+  end
+end
+
+class HasQuality
+  def initialize(item)
+    @item = item
+  end
+end
+
+class Product
+  def initialize(item)
+    @item = item
+  end
+
+  def expired?
+    @item.sell_in < 0
+  end
+
+  def maxed_quality?
+    @item.quality < 50
+  end
+
+  def age 
+    update_quality
+    update_sell_in
+    update_quality_again
+  end
+end
+
+class LegendaryProduct < Product
+  def update_sell_in
+  end
+  
+  def update_quality
+  end
+  
+  def update_quality_again
+  end
+end
+
+class NonLegendaryProduct < Product
+  def update_sell_in
+    @item.sell_in -= 1
+  end
+  
+  def update_quality
+    if @item.quality > 0
+      @item.quality -= 1
+    end
+  end
+
+  def update_quality_again
+    if expired?
+      update_quality
+    end
+  end
+end
+
 
 class BackstagePass < NonLegendaryProduct
   def update_quality 
@@ -115,17 +142,6 @@ class AgedBrie < NonLegendaryProduct
       if maxed_quality?
         @item.quality +=1
       end
-    end
-  end
-end
-
-class ConjuredItem < NonLegendaryProduct
-  def update_quality
-    if @item.quality > 0
-      @item.quality -= 1
-    end
-    if @item.quality > 0
-      @item.quality -= 1
     end
   end
 end
