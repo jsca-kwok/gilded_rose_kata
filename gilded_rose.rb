@@ -62,17 +62,30 @@ class NoQuality
   def initialize(item)
     @item = item
   end
+
+  def update_quality
+  end
 end
 
 class NormalQuality
   def initialize(item)
     @item = item
   end
+
+  def update_quality
+    if @item.quality > 0
+      @item.quality -= 1
+    end
+  end
 end
 
 class MaxQuality
   def initialize(item)
     @item = item
+  end
+
+  def update_quality
+    @item.quality -= 1
   end
 end
 
@@ -113,9 +126,10 @@ class NonLegendaryProduct < Product
   end
   
   def update_quality
-    if @item.quality > 0
-      @item.quality -= 1
-    end
+    # if @item.quality > 0
+    #   @item.quality -= 1
+    # end
+    QualityFactory.new(@item).build.update_quality
   end
 
   def update_quality_again
