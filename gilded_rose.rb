@@ -39,7 +39,21 @@ class QualityFactory
     if @item.quality < 0
       NoQuality.new(@item)
     else
-      HasQuality.new(@item)
+      HasQualityFactory.new(@item).build
+    end
+  end
+end
+
+class HasQualityFactory
+  def initialize(item)
+    @item = item
+  end
+
+  def build
+    if @item.quality > 50
+      MaxQuality.new(@item)
+    else
+      NormalQuality.new(@item)
     end
   end
 end
@@ -50,7 +64,13 @@ class NoQuality
   end
 end
 
-class HasQuality
+class NormalQuality
+  def initialize(item)
+    @item = item
+  end
+end
+
+class MaxQuality
   def initialize(item)
     @item = item
   end
