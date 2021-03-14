@@ -85,7 +85,6 @@ class MaxQuality
   end
 
   def update_quality
-    @item.quality -= 1
   end
 end
 
@@ -126,9 +125,6 @@ class NonLegendaryProduct < Product
   end
   
   def update_quality
-    # if @item.quality > 0
-    #   @item.quality -= 1
-    # end
     QualityFactory.new(@item).build.update_quality
   end
 
