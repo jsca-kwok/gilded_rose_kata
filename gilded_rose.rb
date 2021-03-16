@@ -20,8 +20,6 @@ class NonLegendaryProductFactory
   def build
     if @item.name == 'Backstage passes to a TAFKAL80ETC concert'
       BackstagePass.new(@item)
-    elsif @item.name == 'Conjured Mana Cake'
-      ConjuredItem.new(@item)
     else
       NonLegendaryProduct.new(@item)
     end
@@ -54,6 +52,8 @@ class HasQualityFactory
       BackstagePassQuality.new(@item)
     elsif @item.name == 'Aged Brie'
       AgedBrieQuality.new(@item)
+    elsif @item.name == 'Conjured Mana Cake'
+      ConjuredItemQuality.new(@item)
     else
       NormalQuality.new(@item)
     end
@@ -120,6 +120,14 @@ class AgedBrieQuality < NormalQuality
   end
 end
 
+class ConjuredItemQuality < NormalQuality
+  def update_quality
+    unless @item.quality == 0
+      @item.quality -= 2
+    end
+  end
+end
+
 class Product
   def initialize(item)
     @item = item
@@ -166,7 +174,6 @@ class NonLegendaryProduct < Product
     end
   end
 end
-
 
 class BackstagePass < NonLegendaryProduct
   def update_quality_again
