@@ -18,9 +18,7 @@ class NonLegendaryProductFactory
   end
   
   def build
-    if @item.name == 'Aged Brie'
-      AgedBrie.new(@item)
-    elsif @item.name == 'Backstage passes to a TAFKAL80ETC concert'
+    if @item.name == 'Backstage passes to a TAFKAL80ETC concert'
       BackstagePass.new(@item)
     elsif @item.name == 'Conjured Mana Cake'
       ConjuredItem.new(@item)
@@ -171,27 +169,9 @@ end
 
 
 class BackstagePass < NonLegendaryProduct
-  def update_quality 
-    QualityFactory.new(@item).build.update_quality
-  end
-
   def update_quality_again
     if expired?
       @item.quality = 0
-    end
-  end
-end
-
-class AgedBrie < NonLegendaryProduct
-  def update_quality
-    QualityFactory.new(@item).build.update_quality
-  end
-
-  def update_quality_again
-    if expired?
-      if not_maxed_quality?
-        @item.quality +=1
-      end
     end
   end
 end
