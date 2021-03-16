@@ -54,6 +54,8 @@ class HasQualityFactory
       MaxQuality.new(@item)
     elsif @item.name == 'Backstage passes to a TAFKAL80ETC concert'
       BackstagePassQuality.new(@item)
+    elsif @item.name == 'Aged Brie'
+      AgedBrieQuality.new(@item)
     else
       NormalQuality.new(@item)
     end
@@ -108,6 +110,14 @@ class BackstagePassQuality < NormalQuality
           @item.quality += 1
         end
       end
+    end
+  end
+end
+
+class AgedBrieQuality < NormalQuality
+  def update_quality
+    if not_maxed_quality?
+      @item.quality += 1
     end
   end
 end
@@ -174,9 +184,7 @@ end
 
 class AgedBrie < NonLegendaryProduct
   def update_quality
-    if not_maxed_quality?
-      @item.quality += 1
-    end
+    QualityFactory.new(@item).build.update_quality
   end
 
   def update_quality_again
