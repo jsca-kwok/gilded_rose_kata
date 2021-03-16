@@ -122,9 +122,8 @@ end
 
 class ConjuredItemQuality < NormalQuality
   def update_quality
-    unless @item.quality == 0
-      @item.quality -= 2
-    end
+    super
+    super
   end
 end
 
