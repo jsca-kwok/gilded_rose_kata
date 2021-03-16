@@ -52,6 +52,8 @@ class HasQualityFactory
   def build
     if @item.quality > 50
       MaxQuality.new(@item)
+    elsif @item.name == 'Backstage passes to a TAFKAL80ETC concert'
+      BackstagePassQuality.new(@item)
     else
       NormalQuality.new(@item)
     end
@@ -72,6 +74,10 @@ class NormalQuality
     @item = item
   end
 
+  def not_maxed_quality?
+    @item.quality < 50
+  end
+
   def update_quality
     if @item.quality > 0
       @item.quality -= 1
@@ -88,6 +94,24 @@ class MaxQuality
   end
 end
 
+class BackstagePassQuality < NormalQuality
+  def update_quality
+    if not_maxed_quality?
+      @item.quality += 1
+      if @item.sell_in < 11
+        if not_maxed_quality?
+          @item.quality += 1
+        end
+      end
+      if @item.sell_in < 6
+        if not_maxed_quality?
+          @item.quality += 1
+        end
+      end
+    end
+  end
+end
+
 class Product
   def initialize(item)
     @item = item
@@ -97,7 +121,7 @@ class Product
     @item.sell_in < 0
   end
 
-  def maxed_quality?
+  def not_maxed_quality?
     @item.quality < 50
   end
 
@@ -138,19 +162,7 @@ end
 
 class BackstagePass < NonLegendaryProduct
   def update_quality 
-    if maxed_quality?
-      @item.quality += 1
-      if @item.sell_in < 11
-        if maxed_quality?
-          @item.quality += 1
-        end
-      end
-      if @item.sell_in < 6
-        if maxed_quality?
-          @item.quality += 1
-        end
-      end
-    end
+    QualityFactory.new(@item).build.update_quality
   end
 
   def update_quality_again
@@ -162,14 +174,14 @@ end
 
 class AgedBrie < NonLegendaryProduct
   def update_quality
-    if maxed_quality?
+    if not_maxed_quality?
       @item.quality += 1
     end
   end
 
   def update_quality_again
     if expired?
-      if maxed_quality?
+      if not_maxed_quality?
         @item.quality +=1
       end
     end
